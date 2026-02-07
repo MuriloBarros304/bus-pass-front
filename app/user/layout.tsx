@@ -2,11 +2,11 @@
 
 import React from 'react';
 
-interface RegisterLayoutProps {
+interface UserLayoutProps {
     children: React.ReactNode;
 }
 
-export default function RegisterLayout({ children }: RegisterLayoutProps) {
+export default function UserLayout({ children }: UserLayoutProps) {
     return (
         <div>
         <main>

@@ -1,14 +1,14 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+'use client';
 
-
-function Home() {
+function About() {
     return (
-        <div>
-                <h1>Testando</h1>
-                <p>Página inicial</p>
+        <div className="flex">
+            <div className="flex-1 p-4">
+                <h1>Sobre</h1>
+                <p>Página mostrando informações sobre o projeto</p>
+            </div>
         </div>
     );
 }
 
-export default Home;
+export default About;
