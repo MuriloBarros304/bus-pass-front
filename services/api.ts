@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/api"; // Substituir pelo URL real da API
+const BASE_URL = "http://192.168.100.32:8080"; // Substituir pelo URL real da API
 
 const api = axios.create({
     baseURL: BASE_URL,

@@ -1,26 +1,39 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+    /* Definição das cores (O Tailwind v4 gera bg-*, text-*, border-* automaticamente) */
+    --color-brand: #FACC15;
+    --color-brand-medium: #EAB308;
+    --color-brand-strong: #CA8A04;
+
+    --color-neutral-primary: #0F172A;
+    --color-neutral-secondary-low: #1E293B;
+    --color-neutral-secondary-medium: #334155;
+
+    /* Cores de Status */
+    --color-status-approved: #10B981;
+    --color-status-pending: #F59E0B;
+    --color-status-rejected: #EF4444;
+
+    /* Tipografia e Cores de Texto */
+    --color-heading: #F8FAFC;
+    --color-body: #94A3B8;
+
+    /* Bordas e Sombras */
+    --radius-base: 12px;
+    --border-default: 1px solid var(--color-neutral-secondary-medium);
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+    body {
+        background-color: var(--color-neutral-primary);
+        color: var(--color-heading);
+        @apply antialiased;
+    }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    input:-webkit-autofill {
+        -webkit-text-fill-color: var(--color-heading) !important;
+        -webkit-box-shadow: 0 0 0px 1000px var(--color-neutral-secondary-low) inset !important;
+    }
 }

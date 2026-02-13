@@ -6,7 +6,7 @@ import api from "./api";
 // Create
 export async function createTrip(trip: TripType) {
     try {
-        const response = await api.post("/trips", trip); // Ver endpoint correto
+        const response = await api.post("/viagens", trip);
         return response.data;
     } catch (error) {
         console.error("Erro ao criar viagem:", error);
@@ -17,7 +17,7 @@ export async function createTrip(trip: TripType) {
 // Read
 export async function readTrips() {
     try {
-        const response = await api.get("/trips");
+        const response = await api.get("/viagens");
         return response.data;
     } catch (error) {
         console.error("Erro ao ler viagens:", error);
@@ -28,7 +28,7 @@ export async function readTrips() {
 // Update
 export async function updateTrip(id: number, trip: TripType) {
     try {
-        const response = await api.put(`/trips/${id}`, trip);
+        const response = await api.put(`/viagens/${id}`, trip);
         return response.data;
     } catch (error) {
         console.error("Erro ao atualizar viagem:", error);
@@ -39,7 +39,7 @@ export async function updateTrip(id: number, trip: TripType) {
 // Delete
 export async function deleteTrip(id: number) {
     try {
-        const response = await api.delete(`/trips/${id}`);
+        const response = await api.delete(`/viagens/${id}`);
         return response.data;
     } catch (error) {
         console.error("Erro ao deletar viagem:", error);
