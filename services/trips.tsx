@@ -6,7 +6,7 @@ import api from "./api";
 // Create
 export async function createTrip(trip: TripType) {
     try {
-        const response = await api.post("/viagens", trip);
+        const response = await api.post("/trips", trip);
         return response.data;
     } catch (error) {
         console.error("Erro ao criar viagem:", error);
@@ -17,10 +17,10 @@ export async function createTrip(trip: TripType) {
 // Read
 export async function readTrips() {
     try {
-        const response = await api.get("/viagens");
+        const response = await api.get("/trips");
         return response.data;
     } catch (error) {
-        console.error("Erro ao ler viagens:", error);
+        console.error("Erro ao ler trips:", error);
         throw error;
     }
 }
@@ -28,7 +28,7 @@ export async function readTrips() {
 // Update
 export async function updateTrip(id: number, trip: TripType) {
     try {
-        const response = await api.put(`/viagens/${id}`, trip);
+        const response = await api.put(`/trips/${id}`, trip);
         return response.data;
     } catch (error) {
         console.error("Erro ao atualizar viagem:", error);
@@ -39,10 +39,21 @@ export async function updateTrip(id: number, trip: TripType) {
 // Delete
 export async function deleteTrip(id: number) {
     try {
-        const response = await api.delete(`/viagens/${id}`);
+        const response = await api.delete(`/trips/${id}`);
         return response.data;
     } catch (error) {
         console.error("Erro ao deletar viagem:", error);
+        throw error;
+    }
+}
+
+// Get by ID
+export async function getTripById(id: number) {
+    try {
+        const response = await api.get(`/trips/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Erro ao buscar viagem por ID:", error);
         throw error;
     }
 }

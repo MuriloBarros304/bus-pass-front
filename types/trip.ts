@@ -1,7 +1,8 @@
 export type TripType = {
     id?: number;
-    origem: string;
-    destino: string;
-    horarioPartida: string; // AAAA-MM-DDTHH:mm:ss
-    tipo: string;
+    origin: string;
+    destination: string;
+    departureTime: string; // AAAA-MM-DDTHH:mm:ss
+    type: string;
+    details: string;
 };

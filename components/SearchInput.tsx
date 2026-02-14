@@ -4,7 +4,7 @@ interface SearchInputProps {
     type: string;
 }
 
-function SearchInput({ type }: SearchInputProps) {
+const SearchInput = ({ type }: SearchInputProps) => {
     return (
     <form className="max-w-md mx-auto">
         <label htmlFor="search" className="block mb-2.5 text-sm font-medium text-heading sr-only ">Pesquisar</label>

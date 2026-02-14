@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import LoadingSpinner from "../../components/LoadingSpinner";
 
-function Trips() {
+const Trips = () => {
     const [trips, setTrips] = useState<TripType[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -28,8 +28,6 @@ function Trips() {
         fetchTrips();
     }, []);
 
-    
-
     return (
         <div>
             <h1 className="mb-5">Viagens</h1>
@@ -37,16 +35,16 @@ function Trips() {
             {isLoading ? (
                 <LoadingSpinner />
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
                     {trips.map((trip) => (
                         <div key={trip.id}>
                             <Link href={`/trips/${trip.id}`} className="bg-neutral-primary-soft block max-w-sm p-6 border border-default rounded-base shadow-xs hover:bg-neutral-secondary-medium mt-5">
-                                <h5 className="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8">{trip.origem} - {trip.destino}</h5>
+                                <h5 className="mb-3 text-2xl font-semibold tracking-tight text-heading leading-8">{trip.origin} - {trip.destination}</h5>
                                 <ul>
-                                    <li className="">Origem: {trip.origem}</li>
-                                    <li>Destino: {trip.destino}</li>
-                                    <li>Horário de partida: {trip.horarioPartida}</li>
-                                    <li>Tipo: {trip.tipo}</li>
+                                    <li className="">Origem: {trip.origin}</li>
+                                    <li>Destino: {trip.destination}</li>
+                                    <li>Horário de partida: {new Date(trip.departureTime).toLocaleString()}</li>
+                                    <li>Tipo: {trip.type}</li>
                                 </ul>
                             </Link>
                         </div>
