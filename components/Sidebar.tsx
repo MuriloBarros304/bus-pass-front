@@ -21,10 +21,14 @@ const Sidebar = () => {
                     <path fillRule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
                 </svg>
             </button>
-            <h2 className="text-2xl font-bold mb-4 whitespace-nowrap">{isOpen && 'Bus Pass'}</h2>
+            <h2 className="text-2xl font-bold mb-4 whitespace-nowrap">
+                <img src="bus-pass-logo.png" alt="Bus Pass Logo" className="inline-block w-6 h-3 mr-2"/>
+                <br />
+                {isOpen && 'Bus Pass'}
+            </h2>
             <ul>
                 {menuItems.map((item, index) => (
-                    <li key={index} className="mb-3">
+                    <li key={index} className="mb-3" onClick={() => setIsOpen(false)}>
                         <Link href={item.to} className="hover:underline">
                             <span className={`${isOpen ? 'opacity-100 duration-150 ' : 'opacity-0 duration-0 '} transition-opacity  `}>{item.name}</span>
                         </Link>
