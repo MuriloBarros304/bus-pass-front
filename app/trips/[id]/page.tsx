@@ -1,13 +1,13 @@
 'use client';
 
+import TripDetails from "@/components/TripDetails";
 import { getTripById } from "@/services/trips";
 import { TripType } from "@/types/trip";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-
-const TripDetails = () => {
-    const pageParams = useParams();
+const TripPage = () => {
+    /* const pageParams = useParams();
     const { id } = pageParams;
     const [trip, setTrip] = useState<TripType | null>(null);
 
@@ -22,11 +22,12 @@ const TripDetails = () => {
 
     useEffect(() => {
         fetchTrip();
-    }, [id]);
+    }, [id]); */
 
     return (
         <div className="p-3">
-            <div className="p-5 border border-default rounded-base list-disc max-w-lg">
+            <TripDetails></TripDetails>
+            {/* <div className="p-5 border border-default rounded-base list-disc max-w-lg">
                 <h1>Detalhes da Viagem</h1>
                 <ul>
                     <li>Origem: {trip?.origin}</li>
@@ -37,9 +38,9 @@ const TripDetails = () => {
             </div>
             <div className="mt-5">
                 <p>{trip?.details}</p>
-            </div>
+            </div> */}
         </div>
     );
 };
 
-export default TripDetails;
+export default TripPage;

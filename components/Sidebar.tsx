@@ -5,12 +5,12 @@ import Link from "next/link";
 
 const Sidebar = () => {
     const menuItems = [
-        { name: 'Início', to: 'home' },
-        { name: 'Viagens', to: 'trips' },
-        { name: 'Documentos', to: 'documents' },
-        { name: 'Perfil', to: 'user' },
+        { name: 'Início', to: '/home' },
+        { name: 'Viagens', to: '/trips' },
+        { name: 'Documentos', to: '/documents' },
+        { name: 'Perfil', to: '/user' },
         { name: 'Sobre a página', to: '/' },
-        { name: 'Administração', to: 'admin' },
+        { name: 'Administração', to: '/admin' },
     ];
 
     const [isOpen, setIsOpen] = useState(false);
