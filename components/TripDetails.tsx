@@ -26,7 +26,6 @@ const TripDetails = () => {
     return (
         <div>
             <div className="p-5 border border-default rounded-base list-disc max-w-lg">
-                    <h1>Detalhes da Viagem</h1>
                     <ul>
                         <li>Origem: {trip?.origin}</li>
                         <li>Destino: {trip?.destination}</li>

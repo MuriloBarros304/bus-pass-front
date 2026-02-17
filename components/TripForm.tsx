@@ -1,46 +1,82 @@
 'use client';
 
+import { TripType } from "@/types/trip";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
 interface TripFormProps {
-    origin?: string;
-    destination?: string;
-    departureTime?: string;
-    type?: string;
-    details?: string;
+    trip?: TripType;
+    onSubmit?: (trip: TripType) => void;
 }
 
-const TripForm = ({origin, destination, departureTime, type, details}: TripFormProps) => {
+const TripForm = ({trip, onSubmit}: TripFormProps) => {
+    const [id] = useState<number | undefined>(trip?.id);
+    const [origin, setOrigin] = useState(trip?.origin || "");
+    const [destination, setDestination] = useState(trip?.destination || "");
+    const [departureTime, setDepartureTime] = useState(trip?.departureTime || "");
+    const [type, setType] = useState(trip?.type || "");
+    const [details, setDetails] = useState(trip?.details || "");
+    const router = useRouter();
+
+    useEffect(() => {
+        if (trip) {
+            setOrigin(trip.origin);
+            setDestination(trip.destination);
+            setDepartureTime(trip.departureTime);
+            setType(trip.type);
+            setDetails(trip.details);
+        }
+    }, [trip]);
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (onSubmit) {
+            const tripData: TripType = {
+                id,
+                origin,
+                destination,
+                departureTime,
+                type,
+                details
+            };
+            onSubmit(tripData);
+        }
+    };
 
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <div className="grid gap-6 mb-6 md:grid-cols-2">
-            <div>
-                <label htmlFor="first_name" className="block mb-2.5 text-sm font-medium text-heading">Origem</label>
-                <input type="text" id="first_name" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" required autoComplete={ origin }/>
-            </div>
-            <div>
-                <label htmlFor="last_name" className="block mb-2.5 text-sm font-medium text-heading">Destino</label>
-                <input type="text" id="last_name" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" required autoComplete={ destination }/>
-            </div>
-            <div>
-                <label htmlFor="phone" className="block mb-2.5 text-sm font-medium text-heading">Horário de saída</label>
-                <input type="tel" id="phone" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" pattern="[0-9]{2}:[0-9]{2}" required autoComplete={ departureTime }/>
-            </div>
-            <div>
-                <label htmlFor="website" className="block mb-2.5 text-sm font-medium text-heading">Tipo</label>
-                <div className="flex items-center mb-4">
-                    <input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft" />
-                    <label htmlFor="default-checkbox" className="select-none ms-2 text-sm font-medium text-heading">Empresa</label>
+                <div>
+                    <label htmlFor="first_name" className="block mb-2.5 text-sm font-medium text-heading">Origem</label>
+                    <input type="text" id="first_name" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" required value={ origin } onChange={(e) => setOrigin(e.target.value)}/>
                 </div>
-                <div className="flex items-center">
-                    <input checked id="checked-checkbox" type="checkbox" value="" className="w-4 h-4 border border-default-medium rounded-xs bg-neutral-secondary-medium focus:ring-2 focus:ring-brand-soft" />
-                    <label htmlFor="checked-checkbox" className="select-none ms-2 text-sm font-medium text-heading">Prefeitura</label>
+                <div>
+                    <label htmlFor="last_name" className="block mb-2.5 text-sm font-medium text-heading">Destino</label>
+                    <input type="text" id="last_name" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" required value={ destination } onChange={(e) => setDestination(e.target.value)}/>
+                </div>
+                <div>
+                    <label htmlFor="departureTime" className="block mb-2.5 text-sm font-medium text-heading">Horário de saída</label>
+                    <input type="datetime-local" id="departureTime" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" required value={ departureTime } onChange={(e) => setDepartureTime(e.target.value)}/>
+                </div>
+                <div>
+                    <label htmlFor="type" className="block mb-2.5 text-sm font-medium text-heading">Tipo</label>
+                    <div className="flex items-center">
+                        <select name="type" id="type" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" value={ type } onChange={(e) => setType(e.target.value)}>
+                            <option value="">--Selecione o tipo--</option>
+                            <option value="EMPRESA">Empresa</option>
+                            <option value="PREFEITURA">Prefeitura</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label htmlFor="details" className="block mb-2.5 text-sm font-medium text-heading">Detalhes</label>
+                    <textarea id="details" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" required value={ details } onChange={(e) => setDetails(e.target.value)}/>
                 </div>
             </div>
-            <div>
-                <label htmlFor="visitors" className="block mb-2.5 text-sm font-medium text-heading">Detalhes</label>
-                <input type="number" id="visitors" className="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-6 shadow-xs placeholder:text-body" placeholder="" required autoComplete={ details }/>
-            </div>
-        </div>
+            <button className="text-white bg-brand box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
+            onClick={ () => {router.push("/admin/trips")} }
+            type="submit"
+            >{trip ? "Atualizar" : "Criar"}</button>
         </form>
     );
 }

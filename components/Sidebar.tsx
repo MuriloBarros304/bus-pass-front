@@ -22,7 +22,7 @@ const Sidebar = () => {
                 </svg>
             </button>
             <h2 className="text-2xl font-bold mb-4 whitespace-nowrap">
-                <img src="bus-pass-logo.png" alt="Bus Pass Logo" className="inline-block w-6 h-3 mr-2"/>
+                <img src="/bus-pass-logo.png" alt="Bus Pass Logo" className="inline-block w-6 h-3 mr-2"/>
                 <br />
                 {isOpen && 'Bus Pass'}
             </h2>
