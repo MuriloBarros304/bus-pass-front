@@ -1,21 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-    /* Definição das cores (O Tailwind v4 gera bg-*, text-*, border-* automaticamente) */
+    /* Cores de Marca (Amarelo) */
     --color-brand: #FACC15;
     --color-brand-medium: #EAB308;
     --color-brand-strong: #CA8A04;
+    /* Texto escuro para contraste no fundo amarelo */
+    --color-brand-text: #0F172A; 
 
+    /* Cores Neutras */
     --color-neutral-primary: #0F172A;
     --color-neutral-secondary-low: #1E293B;
     --color-neutral-secondary-medium: #334155;
 
-    /* Cores de Status */
+    /* Cores de Ação */
+    --color-action-delete: #4338ca; 
+    --color-action-delete-strong: #3730a3;
+
+    /* Cores para Status */
     --color-status-approved: #10B981;
     --color-status-pending: #F59E0B;
     --color-status-rejected: #EF4444;
 
-    /* Tipografia e Cores de Texto */
+    /* Tipografia */
     --color-heading: #F8FAFC;
     --color-body: #94A3B8;
 
@@ -23,6 +30,10 @@
     --radius-base: 12px;
     --border-default: 1px solid var(--color-neutral-secondary-medium);
     --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
 }
 
 @layer base {
