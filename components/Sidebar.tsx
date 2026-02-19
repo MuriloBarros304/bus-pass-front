@@ -1,9 +1,12 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 const Sidebar = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const sidebarRef = useRef<HTMLDivElement>(null);
+
     const menuItems = [
         { name: 'Início', to: '/home' },
         { name: 'Viagens', to: '/trips' },
@@ -13,9 +16,25 @@ const Sidebar = () => {
         { name: 'Administração', to: '/admin' },
     ];
 
-    const [isOpen, setIsOpen] = useState(false);
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (isOpen && sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isOpen]);
+
     return (
-        <div className={`${isOpen ? 'w-64' : 'w-14 overflow-hidden '} fixed top-0 left-0 h-full z-50 bg-gray-800 text-white p-4 transition-all duration-200`}>
+        <div
+            ref={sidebarRef}
+            className={`${isOpen ? 'w-64' : 'w-14 overflow-hidden '} fixed top-0 left-0 h-full z-50 bg-gray-800 text-white p-4 transition-all duration-200`}
+        >
             <button onClick={() => setIsOpen(!isOpen)}>
                 <svg viewBox="0 0 24 24" fill="currentColor" className="size-6">
                     <path fillRule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
@@ -30,7 +49,7 @@ const Sidebar = () => {
                 {menuItems.map((item, index) => (
                     <li key={index} className="mb-3" onClick={() => setIsOpen(false)}>
                         <Link href={item.to} className="hover:underline">
-                            <span className={`${isOpen ? 'opacity-100 duration-150 ' : 'opacity-0 duration-0 '} transition-opacity  `}>{item.name}</span>
+                            <span className={`${isOpen ? 'visible opacity-100 duration-150' : 'invisible opacity-0 duration-0'} transition-all`}>{item.name}</span>
                         </Link>
                     </li>
                 ))}

@@ -122,8 +122,8 @@ const TripsGrid = ({ isAdmin }: TripsGridProps) => {
                 </div>
             )}
             {showModal && (
-                <div className="fixed inset-0 z-20 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-neutral-primary p-6 rounded-base border border-default shadow-xl max-w-sm w-full mx-4">
+                <div className="fixed inset-0 z-100 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="bg-neutral-primary p-6 rounded-base border border-default shadow-xl w-full max-w-sm mx-4">
                         <h3 className="text-xl font-bold text-heading mb-4">Confirmar exclusão?</h3>
                         <p className="text-body mb-6">Esta ação não pode ser desfeita. A viagem será removida permanentemente.</p>
                         
