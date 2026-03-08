@@ -29,7 +29,7 @@ const TripDetails = () => {
                     <ul>
                         <li>Origem: {trip?.origin}</li>
                         <li>Destino: {trip?.destination}</li>
-                        <li>Hora de Saída: {trip?.departureTime}</li>
+                        <li>Hora de Saída: {trip?.departureTime ? new Date(trip.departureTime).toLocaleString() : ''}</li>
                         <li>Tipo: {trip?.type}</li>
                     </ul>
                 </div>
