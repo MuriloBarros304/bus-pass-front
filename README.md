@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bus Pass - Frontend
 
-## Getting Started
+O **Bus Pass** é um sistema de gerenciamento de viagens e passe livre para estudantes e usuários da prefeitura. Este repositório contém o frontend da aplicação, construído com foco em performance, responsividade e uma excelente experiência de usuário (UX).
 
-First, run the development server:
+## Tecnologias Utilizadas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+* **Framework:** [Next.js](https://nextjs.org/) (App Router)
+* **Biblioteca UI:** [React](https://react.dev/)
+* **Linguagem:** [TypeScript](https://www.typescriptlang.org/)
+* **Estilização:** [Tailwind CSS v4](https://tailwindcss.com/)
+* **Requisições HTTP:** [Axios](https://axios-http.com/)
+
+## Funcionalidades Atuais
+
+### Navegação e Layout
+* **Sidebar Responsiva:** Menu lateral retrátil com comportamento adaptativo para mobile e desktop. Inclui fechamento automático ao clicar fora (Click Outside) ou ao selecionar um link.
+* **Navegação Universal:** Componente de `BackButton` integrado ao layout principal para facilitar a navegação profunda.
+* **Tema Customizado:** Paleta de cores exclusiva (Brand Yellow, Dark Slate, Indigo Actions) configurada globalmente via Tailwind.
+
+### Gestão de Viagens (Admin & Usuário)
+* **Listagem de Viagens (Grid):** Exibição de viagens em cards responsivos (`TripsGrid`), com altura e largura padronizadas.
+* **Filtro em Tempo Real:** Barra de pesquisa (`SearchInput`) que filtra a lista instantaneamente pelo nome da origem ou destino.
+* **Criação e Edição:** Formulário dinâmico (`TripForm`) com validação de estado, suporte a `datetime-local` e select de tipos (Prefeitura/Empresa).
+* **Exclusão Segura:** Modal de confirmação customizado (com efeito de desfoque e design limpo) para evitar exclusões acidentais, integrado ao método `DELETE` da API.
+
+### Gestão de Documentos (Em Desenvolvimento)
+* Tipagem base e Enums (`DocumentStatus`) já estruturados.
+* Serviços HTTP mapeados para integração com o backend (Aprovação, Reprovação, Criação e Listagem).
+
+## Estrutura de Pastas Principal
+
+```text
+bus-pass-front/
+├── app/                  # Rotas do Next.js (App Router)
+│   ├── admin/trips/      # Rotas protegidas de administração de viagens
+│   ├── trips/            # Visão de viagens para o passageiro
+│   ├── documents/        # Gestão de anexos e comprovantes
+│   └── layout.tsx        # Layout raiz com Sidebar e BackButton
+├── components/           # Componentes reutilizáveis (UI)
+│   ├── Sidebar.tsx
+│   ├── TripsGrid.tsx
+│   ├── TripForm.tsx
+│   └── SearchInput.tsx
+├── services/             # Integração com a API Spring Boot (Axios)
+│   ├── api.ts            # Instância configurada do Axios
+│   ├── trips.ts          # CRUD de viagens
+│   └── documents.ts      # CRUD de documentos
+├── types/                # Interfaces e Tipos do TypeScript
+│   ├── trip.ts
+│   └── document.ts
+└── globals.css           # Variáveis CSS e configurações do Tailwind v4
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Como Executar o Projeto Localmente
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clone o repositório:**
+```bash
+git clone git@github.com:MuriloBarros304/bus-pass-front.git
+cd bus-pass-front
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+2. **Instale as dependências:**
+```bash
+npm install
+# ou
+yarn install
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+3. **Configure as variáveis de ambiente:**
+* Crie um arquivo `.env.local` na raiz do projeto.
+* Adicione a URL do seu backend Spring Boot (ex: `NEXT_PUBLIC_API_URL=http://localhost:8080`). *(Ajuste conforme sua configuração no `api.ts`)*.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. **Inicie o servidor de desenvolvimento:**
+```bash
+npm run dev
+# ou
+yarn dev
+
+```
+
+
+5. **Acesse a aplicação:**
+Abra [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000) no seu navegador.

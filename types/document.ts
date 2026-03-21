@@ -4,4 +4,5 @@ export type DocumentType = {
     fileName: string;
     filePath: string;
     status: string;
+    type: string;
 };

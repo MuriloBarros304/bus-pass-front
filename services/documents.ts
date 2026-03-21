@@ -26,14 +26,32 @@ export async function readDocuments(userId: number) {
 }
 
 // Update
-export async function updateDocument(document: DocumentType, documentId: number) {
+export async function updateDocument(documentId: number, file: File, type: string) {
+    console.log(`Simulando ATUALIZAÇÃO do arquivo: ${file.name}`);
+    
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log("Atualização simulada com sucesso!");
+            resolve({
+                id: documentId,
+                fileName: file.name,
+                type: type,
+                status: "PENDENTE", // Volta para pendente após reenvio
+                filePath: "https://sitefalso.com/arquivo-atualizado.pdf"
+            });
+        }, 2000);
+    });
+
+    /* QUANDO O BACKEND ESTIVER PRONTO:
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("type", type);
+    
     try {
-        const response = await api.put(`/documents/${documentId}`, document);
+        const response = await api.put(`/documents/${documentId}`, formData);
         return response.data;
-    } catch (error) {
-        console.log("Erro ao atualizar documento para este usuário:", error);
-        throw error;
-    }
+    } catch (error) { ... }
+    */
 }
 
 // Delete
@@ -47,6 +65,18 @@ export async function deleteDocument(documentId: number) {
     }
 }
 
+// Buscar documento por ID
+export async function getDocumentById(documentId: number) {
+    try {
+        const response = await api.get(`/documents/${documentId}`);
+        return response.data;
+    } catch (error) {
+        console.log("Erro ao buscar documento por ID:", error);
+        throw error;
+    }
+}
+
+// Aprovar documento
 export async function approveDocument(documentId: number) {
     try {
         const response = await api.put(`/documents/${documentId}/approve`);
@@ -57,6 +87,7 @@ export async function approveDocument(documentId: number) {
     }
 }
 
+// Reprovar documento
 export async function rejectDocument(documentId: number) {
     try {
         const response = await api.put(`/documents/${documentId}/reject`);
@@ -65,4 +96,38 @@ export async function rejectDocument(documentId: number) {
         console.log("Erro ao reprovar documento:", error);
         throw error;
     }
+}
+
+// Subir documento na nuvem (Ainda não implementado no backend)
+// export async function uploadDocument(file: File, type: string, userId: number) {
+//     const formData = new FormData();
+//     formData.append("file", file); // O arquivo físico (PDF, JPG)
+//     formData.append("type", type); // RG, Comprovante, etc.
+
+//     try {
+//         const response = await api.post(`/documents/user/${userId}/upload`, formData);
+//         return response.data;
+//     } catch (error) {
+//         console.log("Erro ao fazer upload do documento:", error);
+//         throw error;
+//     }
+// }
+
+// Simulação de upload (sem backend)
+export async function uploadDocument(file: File, type: string, userId: number) {
+    console.log(`Simulando upload do arquivo: ${file.name} (Tipo: ${type})`);
+
+    // Retorna uma Promise que resolve após 2 segundos (simulando a rede)
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log("Upload simulado com sucesso!");
+            resolve({
+                id: Math.floor(Math.random() * 1000), // ID falso
+                fileName: file.name,
+                type: type,
+                status: "PENDENTE",
+                filePath: "https://sitefalso.com/arquivo.pdf" // Link falso
+            });
+        }, 2000); // 2 segundos de espera
+    });
 }
