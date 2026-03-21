@@ -25,29 +25,29 @@ const Documents = () => {
             await new Promise(resolve => setTimeout(resolve, 2000)); // Retirar depois
             const data = await readDocuments(currentUserId);
             const mergedDocs = STANDARD_DOCUMENTS.map((stdType) => {
-            const uploadedDoc = data.find((doc: DocumentType) => doc.type === stdType);
-            
-            if (uploadedDoc) {
-                return uploadedDoc; // Se achou, usa o que veio do banco
-            } else {
-                // Se não achou, cria um "Documento Fantasma" para preencher a tela
-                return {
-                    id: `missing-${stdType}`, // ID falso só para o React (key)
-                    type: stdType,
-                    fileName: "Nenhum arquivo selecionado",
-                    status: "NÃO ENVIADO", // Novo status exclusivo do frontend
-                    filePath: null
-                };
-            }
-        });
+                const uploadedDoc = data.find((doc: DocumentType) => doc.type === stdType);
+                
+                if (uploadedDoc) {
+                    return uploadedDoc; // Se achou, usa o que veio do banco
+                } else {
+                    // Se não achou, cria um "Documento Fantasma" para preencher a tela
+                    return {
+                        id: `missing-${stdType}`, // ID falso só para o React (key)
+                        type: stdType,
+                        fileName: "Nenhum arquivo selecionado",
+                        status: "NÃO ENVIADO", // Novo status exclusivo do frontend
+                        filePath: null
+                    };
+                }
+            });
 
-        setDocuments(mergedDocs);
-    } catch (error) {
-        console.error("Erro ao buscar documentos: ", error);
-    } finally {
-        setIsLoading(false);
-    }
-};
+            setDocuments(mergedDocs);
+        } catch (error) {
+            console.error("Erro ao buscar documentos: ", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
         fetchDocuments();
@@ -114,7 +114,7 @@ const Documents = () => {
                             
                             <div className="mt-auto pt-4 border-t border-default flex justify-between items-center">
                                 {doc.status === "NÃO ENVIADO" ? (
-                                    <button 
+                                    <button
                                         onClick={() => router.push(`/documents/new?type=${doc.type}`)}
                                         className="w-full text-center text-sm font-medium text-brand-text bg-brand hover:bg-brand-strong rounded-base py-2 transition-colors"
                                     >
@@ -127,7 +127,8 @@ const Documents = () => {
                                         </a>
                                         
                                         {doc.status?.toUpperCase() === "REJEITADO" && (
-                                            <button onClick={() => router.push(`/documents/${doc.id}/edit`)} className="text-sm font-medium text-status-rejected hover:text-red-400">
+                                            <button
+                                            onClick={() => router.push(`/documents/${doc.id}/edit`)} className="text-sm font-medium text-status-rejected hover:text-red-400">
                                                 Reenviar
                                             </button>
                                         )}

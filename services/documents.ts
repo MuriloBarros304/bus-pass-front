@@ -26,14 +26,32 @@ export async function readDocuments(userId: number) {
 }
 
 // Update
-export async function updateDocument(document: DocumentType) {
+export async function updateDocument(documentId: number, file: File, type: string) {
+    console.log(`Simulando ATUALIZAÇÃO do arquivo: ${file.name}`);
+    
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            console.log("Atualização simulada com sucesso!");
+            resolve({
+                id: documentId,
+                fileName: file.name,
+                type: type,
+                status: "PENDENTE", // Volta para pendente após reenvio
+                filePath: "https://sitefalso.com/arquivo-atualizado.pdf"
+            });
+        }, 2000);
+    });
+
+    /* QUANDO O BACKEND ESTIVER PRONTO:
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("type", type);
+    
     try {
-        const response = await api.put(`/documents/${document.id}`, document);
+        const response = await api.put(`/documents/${documentId}`, formData);
         return response.data;
-    } catch (error) {
-        console.log("Erro ao atualizar documento para este usuário:", error);
-        throw error;
-    }
+    } catch (error) { ... }
+    */
 }
 
 // Delete
@@ -87,11 +105,7 @@ export async function rejectDocument(documentId: number) {
 //     formData.append("type", type); // RG, Comprovante, etc.
 
 //     try {
-//         const response = await api.post(`/documents/user/${userId}/upload`, formData, {
-//             headers: {
-//                 "Content-Type": "multipart/form-data", // Avisa o Spring Boot que tá chegando um arquivo pesado
-//             },
-//         });
+//         const response = await api.post(`/documents/user/${userId}/upload`, formData);
 //         return response.data;
 //     } catch (error) {
 //         console.log("Erro ao fazer upload do documento:", error);

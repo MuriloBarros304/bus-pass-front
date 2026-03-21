@@ -6,6 +6,7 @@ import BackButton from "@/components/BackButton";
 import { uploadDocument, updateDocument } from "@/services/documents";
 import { DocumentType } from "@/types/document";
 import LoadingSpinner from "./LoadingSpinner";
+import { FormErrors } from "@/types/form";
 
 interface DocumentFormProps {
     document?: DocumentType;
@@ -26,9 +27,8 @@ const DocumentForm = ({document}: DocumentFormProps) => {
     const [file, setFile] = useState<File | null>(null);
     const [existingFileName, setExistingFileName] = useState<string | null>(document?.fileName || null);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const [errors, setErrors] = useState<FormErrors>({});
 
-    // Pega o tipo de documento da URL (se existir)
     useEffect(() => {
         const typeFromUrl = searchParams.get("type");
         if (typeFromUrl && STANDARD_DOCUMENTS.includes(typeFromUrl)) {
@@ -37,19 +37,19 @@ const DocumentForm = ({document}: DocumentFormProps) => {
     }, [searchParams]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setError(null);
+        setErrors(prev => ({ ...prev, file: undefined, global: undefined }));
         const selectedFile = e.target.files?.[0];
 
         if (selectedFile) {
             // Validação de Tamanho (Máximo 5MB)
             if (selectedFile.size > 5 * 1024 * 1024) {
-                setError("O arquivo é muito grande. O limite máximo é de 5MB.");
+                setErrors(prev => ({ ...prev, file: "O arquivo é muito grande. O limite máximo é de 5MB." }));
                 setFile(null);
                 return;
             }
             // Validação de Tipo
             if (!['application/pdf', 'image/jpeg', 'image/png'].includes(selectedFile.type)) {
-                setError("Formato inválido. Aceitamos apenas PDF, JPG ou PNG.");
+                setErrors(prev => ({ ...prev, file: "Formato inválido. Aceitamos apenas PDF, JPG ou PNG." }));
                 setFile(null);
                 return;
             }
@@ -59,33 +59,42 @@ const DocumentForm = ({document}: DocumentFormProps) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError(null);
+        const newErrors: FormErrors = {};
 
-        if (!file || !documentType) {
-            setError("Por favor, selecione um tipo de documento e anexe um arquivo.");
+        // Remova os "return" daqui! Deixe o código acumular todos os erros.
+        if (!documentType) {
+            newErrors.type = "Por favor, selecione um tipo de documento";
+        }
+        
+        if (!file && !document?.id) {
+            newErrors.file = "Por favor, selecione um arquivo para upload";
+        }
+
+        // Agora sim, se acumulou algum erro, ele atualiza o estado e para o envio.
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
             return;
         }
 
+        if (!file) return;
         try {
-            setIsLoading(true);
             const currentUserId = 1; // Fixo por enquanto
+            setIsLoading(true);
+            setErrors({}); // Limpa erros globais anteriores
             
             if (document?.id) {
-                if (!file) {
-                    setError("Por favor, selecione o novo arquivo para reenvio.");
-                    return;
-                }
-                await updateDocument(document);
+                await updateDocument(document.id, file, documentType);
             } else {
-                // Fluxo de CRIAÇÃO
+                // Fluxo de Criação
                 await uploadDocument(file, documentType, currentUserId);
             }
             
             router.push('/documents');
-            router.refresh(); 
+            router.refresh();
+
         } catch (err) {
-            console.error("Erro no upload:", err);
-            setError("Ocorreu um erro ao enviar o documento. Tente novamente.");
+            console.error("Erro na comunicação com a API:", err);
+            setErrors({ global: "Ocorreu um erro ao enviar o documento. Tente novamente." });
         } finally {
             setIsLoading(false);
         }
@@ -103,7 +112,6 @@ const DocumentForm = ({document}: DocumentFormProps) => {
 
                     <form onSubmit={handleSubmit} className="bg-neutral-primary-soft p-6 md:p-8 border border-default rounded-base shadow-xl">
                         
-                        {/* Seleção do Tipo */}
                         <div className="mb-6">
                             <label htmlFor="type" className="block text-sm font-medium text-heading mb-2">
                                 Tipo de Documento
@@ -111,17 +119,24 @@ const DocumentForm = ({document}: DocumentFormProps) => {
                             <select
                                 id="type"
                                 value={documentType}
-                                onChange={(e) => setDocumentType(e.target.value)}
-                                className="w-full p-3 bg-neutral-secondary-medium border border-neutral-secondary-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs outline-none"
+                                onChange={ (e) => {
+                                    setDocumentType(e.target.value)
+                                    setErrors(prev => ({ ...prev, type: undefined }));
+                                }}
+                                className={`w-full p-3 bg-neutral-secondary-medium border text-heading text-sm rounded-base outline-none shadow-xs transition-colors ${
+                                    errors.type
+                                    ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                    : 'border-neutral-secondary-medium focus:border-brand focus:ring-brand'
+                                }`}
                             >
                                 <option value="" disabled>Selecione o documento...</option>
                                 {STANDARD_DOCUMENTS.map((doc) => (
                                     <option key={doc} value={doc}>{doc}</option>
                                 ))}
                             </select>
+                            {errors.type && <p className="text-red-500 text-xs mt-1">{errors.type}</p>}
                         </div>
 
-                        {/* Área de Upload (Drag & Drop visual) */}
                         <div className="mb-6">
                             <label className="block text-sm font-medium text-heading mb-2">
                                 Arquivo
@@ -148,16 +163,15 @@ const DocumentForm = ({document}: DocumentFormProps) => {
                                             </>
                                         )}
                                 </div>
-                                {/* Input invisível que faz o trabalho pesado */}
                                 <input id="dropzone-file" type="file" className="hidden" accept=".pdf, image/jpeg, image/png" onChange={handleFileChange} />
                             </label>
+                            {errors.file && <p className="text-red-500 text-xs mt-2 font-medium">{errors.file}</p>}
                         </div>
 
-                        {/* Exibição de Erros */}
-                        {error && (
+                        {errors.global && (
                             <div className="mb-6 p-3 bg-red-500/10 border border-red-500/50 rounded-base text-status-rejected text-sm flex items-start gap-2">
                                 <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                <span>{error}</span>
+                                <span>{errors.global}</span>
                             </div>
                         )}
 

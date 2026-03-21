@@ -26,6 +26,9 @@
     --color-heading: #F8FAFC;
     --color-body: #94A3B8;
 
+    /* Fonte */
+    --font-sans: Arial, Helvetica, sans-serif;
+
     /* Bordas e Sombras */
     --radius-base: 12px;
     --border-default: 1px solid var(--color-neutral-secondary-medium);
